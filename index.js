@@ -16,6 +16,12 @@ app.get('/users/:id',userCtrl.getUser)
 app.post('/users',userCtrl.postUsers)
 app.delete('/users/:id',userCtrl.deleteUser)
 app.patch('/users/:id',userCtrl.patchUser)
+
+app.get('/query',userCtrl.queryUser)
+app.get('/finders',userCtrl.findersUser)
+app.get('/get-set-virtual',userCtrl.getSetVirtualUser)
+app.get('/validate',userCtrl.validateUser)
+app.get('/raw-queries',userCtrl.rawQueryUser)
 // User.sync({ force: true });
 // Contact.sync({ force: true });
 
