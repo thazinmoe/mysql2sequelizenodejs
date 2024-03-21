@@ -22,6 +22,8 @@ app.get('/finders',userCtrl.findersUser)
 app.get('/get-set-virtual',userCtrl.getSetVirtualUser)
 app.get('/validate',userCtrl.validateUser)
 app.get('/raw-queries',userCtrl.rawQueryUser)
+app.get('/one-to-one',userCtrl.oneToOneUser)
+app.get('/one-to-many',userCtrl.oneToManyUser)
 // User.sync({ force: true });
 // Contact.sync({ force: true });
 

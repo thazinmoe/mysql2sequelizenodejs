@@ -1,6 +1,8 @@
 var db = require("../models");
 const { Sequelize, Op, QueryTypes } = require('sequelize');
 var User = db.user;
+var Contact = db.contact;
+
 var addUser = async (req, res) => {
   const jane = await User.create({ firstName: "Robin", lastName: "Singh" });
   //   const jane = User.build({ firstName: "Jane", lastName: "singh" });
@@ -267,6 +269,57 @@ var validateUser = async (req, res) => {
     res.status(200).json({data:users});
   }
 
+  var oneToOneUser = async (req, res) => {
+    // var data = await User.create({firstName: "gurmeet", lastName: "singh"})
+    // if(data && data.id){
+    //   await Contact.create({permanent_address: 'abc', current_address: 'xyz',
+    //   'user_id': data.id})
+    // }
+    // var data = await User.findAll({
+    //   // include: Contact,
+    //   // attributes: ['firstName', 'lastName'],
+    //   attributes: ['firstName', 'lastName'],
+    //   include:[{
+    //     model: Contact,
+    //     as:'contactDetails',
+    //     attributes: ['permanent_address', 'current_address']
+    //   }],
+    //   where: {id:2}
+    // })
+    var data = await Contact.findAll({
+      attributes: ['permanent_address', 'current_address'],
+      include:[{
+        model: User,
+        as:'userDetails',
+        attributes: ['firstName', 'lastName'],
+      }],
+      where: {id:2}
+    })
+    res.status(200).json({data:data});
+  }
+
+  var oneToManyUser = async (req, res) => {
+    // await Contact.create({permanent_address: 'Delhi', current_address: 'Noida',
+    //   'user_id': 2})
+    // var data = await Contact.findAll({
+    //   attributes: ['permanent_address', 'current_address'],
+    //   include:[{
+    //     model: User,
+    //     as:'userDetails',
+    //     attributes: ['firstName', 'lastName'],
+    //   }],
+    //   where: {id:1}
+    // })
+    var data = await Contact.findAll({
+      attributes: ['permanent_address', 'current_address'],
+      include:[{
+        model: User,
+        as:'userDetails',
+        attributes: ['firstName', 'lastName'],
+      }]
+    })
+    res.status(200).json({data:data});
+  }
 
 module.exports = {
   addUser,
@@ -280,4 +333,6 @@ module.exports = {
   getSetVirtualUser,
   validateUser,
   rawQueryUser,
+  oneToOneUser,
+  oneToManyUser,
 };
