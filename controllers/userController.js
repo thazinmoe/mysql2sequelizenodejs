@@ -2,6 +2,7 @@ var db = require("../models");
 const { Sequelize, Op, QueryTypes } = require('sequelize');
 var User = db.user;
 var Contact = db.contact;
+var Education = db.education;
 
 var addUser = async (req, res) => {
   const jane = await User.create({ firstName: "Robin", lastName: "Singh" });
@@ -363,6 +364,57 @@ var validateUser = async (req, res) => {
     res.status(200).json({data:data});
   }
 
+  var loadingUser = async (req, res) => {
+    // var data = await User.create({firstName: "manoj", lastName: "kumar"})
+    // if(data && data.id){
+    //   await Contact.create({permanent_address: 'hapur', current_address: 'meerut', 'UserId':data.id})
+    // }
+    // var data = await User.findOne({
+    //   where: {
+    //     id: 2
+    //   },
+    //   // include: Contact
+    // })
+    // var contactData = await data.getContacts();
+    // res.status(200).json({data:data, contactData: contactData})
+    var data = await User.findAll({
+      attributes: ['firstName', 'lastName'],
+      include:[{
+        model: Contact,
+        attributes: ['permanent_address', 'current_address'],
+      }]
+    })
+    res.status(200).json({data:data})
+  }
+
+  var eagerUser = async (req, res) => {
+    //  var data = await User.create({firstName: "manoj", lastName: "kumar"})
+    // if(data && data.id){
+    //   await Contact.create({permanent_address: 'hapur', current_address: 'meerut', 'UserId':data.id})
+    // }
+    var data = await User.findAll({
+      // include: [{
+      //   model:Contact,
+      //   required: false,
+      //   right: true
+      // },{
+      //   model:Education
+      // }]
+      include:{
+        model:Contact,
+        include:{
+          model:Education,
+          where:{
+            id:1
+          }
+        },
+        where:{
+          id:1
+        }
+      }
+    })
+    res.status(200).json({data: data, nested: true})
+  }
 
 module.exports = {
   addUser,
@@ -380,4 +432,6 @@ module.exports = {
   oneToManyUser,
   manyToManyUser,
   paranoidUser,
+  loadingUser,
+  eagerUser,
 };

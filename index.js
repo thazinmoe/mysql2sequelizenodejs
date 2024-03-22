@@ -26,6 +26,8 @@ app.get('/one-to-one',userCtrl.oneToOneUser)
 app.get('/one-to-many',userCtrl.oneToManyUser)
 app.get('/many-to-many',userCtrl.manyToManyUser)
 app.get('/paranoid',userCtrl.paranoidUser)
+app.get('/loading',userCtrl.loadingUser)
+app.get('/eager',userCtrl.eagerUser)
 // User.sync({ force: true });
 // Contact.sync({ force: true });
 

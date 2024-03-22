@@ -9,7 +9,8 @@ const Contact = sequelize.define('contacts', {
   current_address: {
     type: DataTypes.STRING
     // allowNull defaults to true
-  }
+  },
+  UserId: DataTypes.INTEGER
 }, {
   // Other model options go here
 });
