@@ -19,12 +19,16 @@ const sequelize = new Sequelize('reactnodemysqltutorial', 'root', 'mysql123', {
 
   db.user = require('./user')(sequelize,DataTypes,Model);
   db.contact = require('./contact')(sequelize,DataTypes);
+  db.userContacts = require('./userContacts')(sequelize,DataTypes,db.user,db.contact);
 
   // db.user.hasOne(db.contact, {foreignKey: 'user_id',as:'contactDetails'});
   // db.contact.belongsTo(db.user, {foreignKey: 'user_id',as:'userDetails'});
 
-  db.user.hasMany(db.contact, {foreignKey: 'user_id',as:'contactDetails'});
-  db.contact.belongsTo(db.user, {foreignKey: 'user_id',as:'userDetails'});
+  // db.user.hasMany(db.contact, {foreignKey: 'user_id',as:'contactDetails'});
+  // db.contact.belongsTo(db.user, {foreignKey: 'user_id',as:'userDetails'});
+
+  db.user.belongsToMany(db.contact, { through: db.userContacts });
+  db.contact.belongsToMany(db.user, { through: db.userContacts }); 
 
   db.sequelize.sync({ force: false });
 

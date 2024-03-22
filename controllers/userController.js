@@ -299,8 +299,11 @@ var validateUser = async (req, res) => {
   }
 
   var oneToManyUser = async (req, res) => {
-    // await Contact.create({permanent_address: 'Delhi', current_address: 'Noida',
-    //   'user_id': 2})
+        // var data = await User.create({firstName: "gurmeet", lastName: "singh"})
+    // if(data && data.id){
+    //   await Contact.create({permanent_address: 'abc', current_address: 'xyz',
+    //   'user_id': data.id})
+    // }
     // var data = await Contact.findAll({
     //   attributes: ['permanent_address', 'current_address'],
     //   include:[{
@@ -321,6 +324,46 @@ var validateUser = async (req, res) => {
     res.status(200).json({data:data});
   }
 
+  var manyToManyUser = async (req, res) => {
+    // var data = await User.create({firstName: "rahul", lastName: "singh"})
+    // if(data && data.id){
+    //   await Contact.create({permanent_address: 'delhi', current_address: 'meerut'})
+    // }
+    // var data = {}
+    // var data = await Contact.findAll({
+    //   attributes: ['permanent_address', 'current_address'],
+    //   include:[{
+    //     model: User,
+    //     attributes: ['firstName', 'lastName'],
+    //   }]
+    // })
+    var data = await User.findAll({
+      attributes: ['firstName', 'lastName'],
+      include:[{
+        model: Contact,
+        attributes: ['permanent_address', 'current_address'],
+      }]
+    })
+    res.status(200).json({data:data});
+  }
+
+  var paranoidUser = async (req, res) => {
+    // var data = await User.create({firstName: 'jagat', lastName: 'kumar'})
+    // var data = await User.destroy({
+    //   where: {
+    //     id: 2
+    //   },
+    //   // force: true
+    // });
+    // var data = await User.restore({where: {
+    //   id: 2
+    // }});
+    // var data = await User.findAll({paranoid: false})
+    var data = await User.findByPk(2, { paranoid: false });
+    res.status(200).json({data:data});
+  }
+
+
 module.exports = {
   addUser,
   getUsers,
@@ -335,4 +378,6 @@ module.exports = {
   rawQueryUser,
   oneToOneUser,
   oneToManyUser,
+  manyToManyUser,
+  paranoidUser,
 };
